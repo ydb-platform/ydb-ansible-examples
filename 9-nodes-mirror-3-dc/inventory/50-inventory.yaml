@@ -1,0 +1,45 @@
+all:
+  children:
+    ydb:
+      hosts:
+        static-node-1.ydb-cluster.com:
+        static-node-2.ydb-cluster.com:
+        static-node-3.ydb-cluster.com:
+        static-node-4.ydb-cluster.com:
+        static-node-5.ydb-cluster.com:
+        static-node-6.ydb-cluster.com:
+        static-node-7.ydb-cluster.com:
+        static-node-8.ydb-cluster.com:
+        static-node-9.ydb-cluster.com:
+
+      vars:
+        ansible_user: ubuntu
+        #ansible_ssh_common_args: "-o ProxyJump=yc-user@158.160.6.109"
+        ansible_ssh_private_key_file: "{{ ansible_config_file | dirname + '/files/yandex' }}"
+
+        system_timezone: Europe/Moscow
+        system_ntp_servers: [213.248.43.36, 192.36.143.130, 94.247.111.10, 188.134.81.45]
+
+        ydb_archive: "{{ ansible_config_file | dirname + '/files/ydbd-23.3.13-linux-amd64.tar.gz' }}"
+        ydb_config: "{{ ansible_config_file | dirname + '/files/config.yaml' }}"
+        ydb_tls_dir: "{{ ansible_config_file | dirname + '/files/CA/certs/2024-01-31_16-54-25' }}"
+
+        ydb_user: root
+        ydb_cores_static: 8 #Нужно хотя бы 16 ядер на машину
+        ydb_disks:
+          - name: /dev/vdb
+            label: ydb_disk_1
+        ydb_allow_format_drives: true
+        ydb_skip_data_loss_confirmation_prompt: true
+        ydb_domain: Root
+        ydb_dbname: database
+        ydb_pool_kind: ssd
+        ydb_database_groups: 10  # 15 available total (15 slots per node, 2 nodes for self-heal)
+        ydb_cores_dynamic: 8
+        ydb_dynnodes:
+          - { instance: 'a', offset: 0 }
+          - { instance: 'b', offset: 1 }
+        ydb_brokers:
+          - static-node-1.ydb-cluster.com
+          - static-node-2.ydb-cluster.com
+          - static-node-3.ydb-cluster.com
