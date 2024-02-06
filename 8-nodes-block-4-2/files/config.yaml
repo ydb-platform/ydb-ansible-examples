@@ -1,0 +1,181 @@
+storage_config_generation: 0
+static_erasure: block-4-2
+host_configs:
+- drive:
+  - path: /dev/disk/by-partlabel/ydb_disk_1
+    type: SSD
+  host_config_id: 1
+hosts:
+- host: static-node-1.ydb-cluster.com
+  host_config_id: 1
+  walle_location:
+    body: 1
+    data_center: 'zone-a'
+    rack: '1'
+- host: static-node-2.ydb-cluster.com
+  host_config_id: 1
+  walle_location:
+    body: 2
+    data_center: 'zone-a'
+    rack: '2'
+- host: static-node-3.ydb-cluster.com
+  host_config_id: 1
+  walle_location:
+    body: 3
+    data_center: 'zone-a'
+    rack: '3'
+- host: static-node-4.ydb-cluster.com
+  host_config_id: 1
+  walle_location:
+    body: 4
+    data_center: 'zone-b'
+    rack: '4'
+- host: static-node-5.ydb-cluster.com
+  host_config_id: 1
+  walle_location:
+    body: 5
+    data_center: 'zone-b'
+    rack: '5'
+- host: static-node-6.ydb-cluster.com
+  host_config_id: 1
+  walle_location:
+    body: 6
+    data_center: 'zone-b'
+    rack: '6'
+- host: static-node-7.ydb-cluster.com
+  host_config_id: 1
+  walle_location:
+    body: 7
+    data_center: 'zone-c'
+    rack: '7'
+- host: static-node-8.ydb-cluster.com
+  host_config_id: 1
+  walle_location:
+    body: 8
+    data_center: 'zone-c'
+    rack: '8'
+domains_config:
+  domain:
+  - name: Root
+    storage_pool_types:
+    - kind: ssd
+      pool_config:
+        box_id: 1
+        erasure_species: block-4-2
+        kind: ssd
+        pdisk_filter:
+        - property:
+          - type: SSD
+        vdisk_kind: Default
+  state_storage:
+  - ring:
+      node: [1, 2, 3, 4, 5, 6, 7, 8]
+      nto_select: 8
+    ssid: 1
+  security_config:
+    enforce_user_token_requirement: false      # User 'root' with the empty password out of box
+    monitoring_allowed_sids:
+    - "root"
+    - "ADMINS"
+    - "DATABASE-ADMINS"
+    administration_allowed_sids:
+    - "root"
+    - "ADMINS"
+    - "DATABASE-ADMINS"
+    viewer_allowed_sids:
+    - "root"
+    - "ADMINS"
+    - "DATABASE-ADMINS"
+table_service_config:
+  sql_version: 1
+blob_storage_config:
+  service_set:
+    groups:
+    - erasure_species: mirror-3-dc
+      rings:
+      - fail_domains:
+        - vdisk_locations:
+          - node_id: static-node-1.ydb-cluster.com
+            pdisk_category: SSD
+            path: /dev/disk/by-partlabel/ydb_disk_1
+        - vdisk_locations:
+          - node_id: static-node-2.ydb-cluster.com
+            pdisk_category: SSD
+            path: /dev/disk/by-partlabel/ydb_disk_1
+        - vdisk_locations:
+          - node_id: static-node-3.ydb-cluster.com
+            pdisk_category: SSD
+            path: /dev/disk/by-partlabel/ydb_disk_1
+      - fail_domains:
+        - vdisk_locations:
+          - node_id: static-node-4.ydb-cluster.com
+            pdisk_category: SSD
+            path: /dev/disk/by-partlabel/ydb_disk_1
+        - vdisk_locations:
+          - node_id: static-node-5.ydb-cluster.com
+            pdisk_category: SSD
+            path: /dev/disk/by-partlabel/ydb_disk_1
+        - vdisk_locations:
+          - node_id: static-node-6.ydb-cluster.com
+            pdisk_category: SSD
+            path: /dev/disk/by-partlabel/ydb_disk_1
+      - fail_domains:
+        - vdisk_locations:
+          - node_id: static-node-7.ydb-cluster.com
+            pdisk_category: SSD
+            path: /dev/disk/by-partlabel/ydb_disk_1
+        - vdisk_locations:
+          - node_id: static-node-8.ydb-cluster.com
+            pdisk_category: SSD
+            path: /dev/disk/by-partlabel/ydb_disk_1
+channel_profile_config:
+  profile:
+  - channel:
+    - erasure_species: block-4-2
+      pdisk_category: 1   # 0=ROT, 1=SSD, 2=NVME
+      storage_pool_kind: ssd
+    - erasure_species: block-4-2
+      pdisk_category: 1
+      storage_pool_kind: ssd
+    - erasure_species: block-4-2
+      pdisk_category: 1
+      storage_pool_kind: ssd
+    profile_id: 0
+interconnect_config:
+    start_tcp: true
+    encryption_mode: OPTIONAL
+    path_to_certificate_file: "/opt/ydb/certs/node.crt"
+    path_to_private_key_file: "/opt/ydb/certs/node.key"
+    path_to_ca_file: "/opt/ydb/certs/ca.crt"
+grpc_config:
+    cert: "/opt/ydb/certs/node.crt"
+    key: "/opt/ydb/certs/node.key"
+    ca: "/opt/ydb/certs/ca.crt"
+    services_enabled:
+    - legacy
+auth_config:
+  path_to_root_ca: /opt/ydb/certs/ca.crt    
+# actor_system_config:          # the configuration of the actor system which descibes how cores of the instance are distributed
+#   executor:                   # accross different types of workloads in the instance.
+#   - name: System              # system executor of the actor system. in this executor YDB launches system type of workloads, like system tablets
+#     threads: 2                # the number of threads allocated to system executor.
+#     type: BASIC
+#   - name: User                # user executor of the actor system. In this executor YDB launches user workloads, like datashard activities,
+#     threads: 4                # the number of threads allocated to user executor.
+#     type: BASIC
+#   - name: Batch               # user executor of the actor system. In this executor YDB launches batch operations, like scan queries, table
+#     threads: 1                # the number of threads allocated to the batch executor.
+#     type: BASIC
+#   - name: IO                  # the io executor. In this executor launches sync operations and writes logs.
+#     threads: 1
+#     time_per_mailbox_micro_secs: 100
+#     type: IO
+#   - name: IC                  # the interconnect executor which YDB uses for network communications accross different nodes of the cluster.
+#     spin_threshold: 10
+#     threads: 2                # the number of threads allocated to the interconnect executor.
+#     time_per_mailbox_micro_secs: 100
+#     type: BASIC
+#   scheduler:
+#     progress_threshold: 10000
+#     resolution: 256
+#     spin_threshold: 0

@@ -38,7 +38,7 @@ COPY . /home/user/project/
 
 RUN echo 'eval `ssh-agent`' >> /home/user/.bashrc
 
-RUN echo 'ssh-add files/ssh_key' >> /home/user/.bashrc
+RUN echo 'ssh-add ./ydb-ssh-conn' >> /home/user/.bashrc
 
 RUN chown -R user:user /home/user
 

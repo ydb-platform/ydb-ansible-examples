@@ -10,7 +10,6 @@ all:
         static-node-6.ydb-cluster.com:
         static-node-7.ydb-cluster.com:
         static-node-8.ydb-cluster.com:
-        static-node-9.ydb-cluster.com:
 
       vars:
         ansible_user: ubuntu
@@ -34,7 +33,7 @@ all:
         ydb_domain: Root
         ydb_dbname: database
         ydb_pool_kind: ssd
-        ydb_database_groups: 8
+        ydb_database_groups: 7
         ydb_cores_dynamic: 8
         ydb_dynnodes:
           - { instance: 'a', offset: 0 }
