@@ -1,9 +1,0 @@
-static-node-1 static-node-1.ydb-cluster.com
-static-node-2 static-node-2.ydb-cluster.com
-static-node-3 static-node-3.ydb-cluster.com
-static-node-4 static-node-4.ydb-cluster.com
-static-node-5 static-node-5.ydb-cluster.com
-static-node-6 static-node-6.ydb-cluster.com
-static-node-7 static-node-7.ydb-cluster.com
-static-node-8 static-node-8.ydb-cluster.com
-static-node-9 static-node-9.ydb-cluster.com

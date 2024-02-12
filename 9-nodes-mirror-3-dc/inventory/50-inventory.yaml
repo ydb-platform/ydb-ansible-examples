@@ -15,14 +15,14 @@ all:
       vars:
         ansible_user: ubuntu
         #ansible_ssh_common_args: "-o ProxyJump=yc-user@158.160.6.109"
-        ansible_ssh_private_key_file: "{{ ansible_config_file | dirname + '../ydb-ssh-conn' }}"
+        ansible_ssh_private_key_file: "../ydb-ssh-conn"
 
         system_timezone: Europe/Moscow
         system_ntp_servers: [213.248.43.36, 192.36.143.130, 94.247.111.10, 188.134.81.45]
 
-        ydb_archive: "{{ ansible_config_file | dirname + '../ydbd-23.3.17-linux-amd64.tar.gz' }}"
+        ydb_archive: "../ydbd-23.3.17-linux-amd64.tar.gz"
         ydb_config: "{{ ansible_config_file | dirname + '/files/config.yaml' }}"
-        ydb_tls_dir: "{{ ansible_config_file | dirname + '/files/CA/certs/2024-02-06_12-44-53' }}"
+        ydb_tls_dir: "../TLS/CA/certs/2024-02-06_15-12-50"
 
         ydb_user: root
         ydb_cores_static: 8 
