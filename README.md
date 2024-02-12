@@ -5,7 +5,7 @@ To switch the documentation language to Russian, follow this [link](./README-RU.
 
 The repository contains ready-to-use templates for deploying a YDB cluster on servers, considering redundancy models `mirror-3-dc` and `block-4-2`. The templates can be scaled depending on the tasks. To download the repository, use the command `git clone https://github.com/ydb-platform/ydb-ansible-examples.git`.
 
-## Required dependencies, external files, and server requirements { #requirements }
+## Required dependencies, external files, and server requirements
 
 Please note that the machine onto which the repository is downloaded must meet the following requirements:
 * Python 3 version 3.10+.
