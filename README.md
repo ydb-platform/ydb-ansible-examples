@@ -27,7 +27,7 @@ Also, the YDB current version [archive](https://ydb.tech/docs/ru/downloads/#ydb-
 To run the `setup_playbook.yaml` playbook, which executes the YDB cluster deployment scenario, it is necessary to install Ansible collections `ydb_platform.ydb` and `community.general`. The collections are installed with the command `ansible-galaxy install -r requirements.yaml`. After installing the collections, you can adapt an existing template from the repository or create your own template by cloning an existing one.
 
 
-## Cluster deployment templates structure { #templates }
+## Cluster deployment templates structure
 The template directories (`8-nodes-block-4-2` and `9-nodes-mirror-3-dc`) are structured identically:
 ```
 .
@@ -112,15 +112,15 @@ When deploying the cluster, minor modifications to the YDB configuration file, l
 
 The other sections and settings of the configuration file remain unchanged.
 
-## Scaling the YDB cluster { #cluster-scaling }
+## Scaling the YDB cluster
 To adapt the ready-made templates for the required number of servers, follow these steps:
 1. Create a copy of the directory with the ready example (`9-nodes-mirror-3-dc` or `8-nodes-block-4-2`).
 2. Specify the FQDNs of the servers in the `TLS/ydb-ca-nodes.txt` file and run the `ydb-ca-update.sh` script to generate sets of TLS certificates.
 3. Make changes to the inventory files of the template `50-inventory.yaml` and `99-inventory-vault.yaml`.
-4. Make changes to the {{ ydb-short-name }} configuration file in accordance with the [instructions](#ydb-config-prepare).
+4. Make changes to the YDB configuration file.
 5. Execute the command `ansible-playbook setup_playbook.yaml` while in the directory of the cloned template.
 
 
-## Verifying cluster operation { #cluster-check }
+## Verifying cluster operation
 
 As a result of executing the playbook, a YDB cluster will be created with a test database named `database`, a `root` user with maximum access rights will be created, and the Embedded UI will be launched on port 8765. To connect to the Embedded UI, you can set up SSH tunneling. To do this on your local machine, execute the command `ssh -L 8765:localhost:8765 -i <ssh private key> <user>@<first ydb static node ip>`. After successfully establishing the connection, you can navigate to the URL [localhost:8765](http://localhost:8765).
