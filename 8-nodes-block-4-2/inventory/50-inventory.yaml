@@ -13,11 +13,11 @@ all:
 
       vars:
         ansible_user: ubuntu
-        #ansible_ssh_common_args: "-o ProxyJump=yc-user@158.160.6.109"
+        #ansible_ssh_common_args: "-o ProxyJump=ubuntu@static-node-1.ydb-cluster.com"
         ansible_ssh_private_key_file: "{{ ansible_config_file | dirname + '../ydb-ssh-conn' }}"
 
-        system_timezone: Europe/Moscow
-        system_ntp_servers: [213.248.43.36, 192.36.143.130, 94.247.111.10, 188.134.81.45]
+        system_timezone: UTC
+        system_ntp_servers: [time.cloudflare.com, time.google.com, ntp.ripe.net, pool.ntp.org]
 
         ydb_archive: "{{ ansible_config_file | dirname + '../ydbd-23.3.17-linux-amd64.tar.gz' }}"
         ydb_config: "{{ ansible_config_file | dirname + '/files/config.yaml' }}"
@@ -29,7 +29,7 @@ all:
           - name: /dev/vdb
             label: ydb_disk_1
         ydb_allow_format_drives: true
-        ydb_skip_data_loss_confirmation_prompt: true
+        ydb_skip_data_loss_confirmation_prompt: false
         ydb_domain: Root
         ydb_dbname: database
         ydb_pool_kind: ssd
