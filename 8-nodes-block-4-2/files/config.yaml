@@ -91,7 +91,7 @@ table_service_config:
 blob_storage_config:
   service_set:
     groups:
-    - erasure_species: mirror-3-dc
+    - erasure_species: block-4-2
       rings:
       - fail_domains:
         - vdisk_locations:
@@ -106,7 +106,6 @@ blob_storage_config:
           - node_id: static-node-3.ydb-cluster.com
             pdisk_category: SSD
             path: /dev/disk/by-partlabel/ydb_disk_1
-      - fail_domains:
         - vdisk_locations:
           - node_id: static-node-4.ydb-cluster.com
             pdisk_category: SSD
@@ -119,7 +118,6 @@ blob_storage_config:
           - node_id: static-node-6.ydb-cluster.com
             pdisk_category: SSD
             path: /dev/disk/by-partlabel/ydb_disk_1
-      - fail_domains:
         - vdisk_locations:
           - node_id: static-node-7.ydb-cluster.com
             pdisk_category: SSD
