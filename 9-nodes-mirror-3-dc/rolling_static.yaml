@@ -1,0 +1,6 @@
+- hosts: ydb
+  become: true
+  tasks:
+    - name: ydb storage nodes rolling restart
+      ansible.builtin.import_role:
+        name: ydb_platform.ydb.ydbd_rolling_static
