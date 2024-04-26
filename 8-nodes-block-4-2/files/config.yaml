@@ -28,31 +28,31 @@ hosts:
   host_config_id: 1
   walle_location:
     body: 4
-    data_center: 'zone-b'
+    data_center: 'zone-a'
     rack: '4'
 - host: static-node-5.ydb-cluster.com
   host_config_id: 1
   walle_location:
     body: 5
-    data_center: 'zone-b'
+    data_center: 'zone-a'
     rack: '5'
 - host: static-node-6.ydb-cluster.com
   host_config_id: 1
   walle_location:
     body: 6
-    data_center: 'zone-b'
+    data_center: 'zone-a'
     rack: '6'
 - host: static-node-7.ydb-cluster.com
   host_config_id: 1
   walle_location:
     body: 7
-    data_center: 'zone-c'
+    data_center: 'zone-a'
     rack: '7'
 - host: static-node-8.ydb-cluster.com
   host_config_id: 1
   walle_location:
     body: 8
-    data_center: 'zone-c'
+    data_center: 'zone-a'
     rack: '8'
 domains_config:
   domain:
