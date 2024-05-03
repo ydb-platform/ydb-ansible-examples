@@ -1,0 +1,43 @@
+all:
+  children:
+    ydb:
+      hosts:
+        static-node-1.ydb-cluster.com:
+        static-node-2.ydb-cluster.com:
+        static-node-3.ydb-cluster.com:
+
+      vars:
+        ansible_user: ubuntu
+        ansible_ssh_common_args: "-o ProxyJump=ubuntu@static-node-1"
+        ansible_ssh_private_key_file: "~/yandex"
+
+        system_timezone: Europe/Moscow
+        system_ntp_servers: [213.248.43.36, 192.36.143.130, 94.247.111.10, 188.134.81.45]
+
+        ydb_archive: "../ydbd-23.3.17-linux-amd64.tar.gz"
+        ydb_config: "{{ ansible_config_file | dirname + '/files/config.yaml' }}"
+        ydb_tls_dir: "../TLS/CA/certs/2024-05-03_07-25-00"
+
+        ydb_user: root
+        ydb_cores_static: 8 
+        ydb_disks:
+          - name: /dev/vdb
+            label: ydb_disk_1
+          - name: /dev/vdc
+            label: ydb_disk_2
+          - name: /dev/vdd
+            label: ydb_disk_3
+        ydb_allow_format_drives: true
+        ydb_skip_data_loss_confirmation_prompt: true
+        ydb_domain: Root
+        ydb_dbname: database
+        ydb_pool_kind: ssd
+        ydb_database_groups: 8
+        ydb_cores_dynamic: 8
+        ydb_dynnodes:
+          - { instance: 'a', offset: 0 }
+          - { instance: 'b', offset: 1 }
+        ydb_brokers:
+          - static-node-1.ydb-cluster.com
+          - static-node-2.ydb-cluster.com
+          - static-node-3.ydb-cluster.com
