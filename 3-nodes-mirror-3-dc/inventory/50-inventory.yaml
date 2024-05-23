@@ -15,7 +15,7 @@ all:
         system_ntp_servers: [time.cloudflare.com, time.google.com, ntp.ripe.net, pool.ntp.org]
 
         ydb_archive: "{{ ansible_config_file | dirname }}/../ydbd-23.3.17-linux-amd64.tar.gz"
-        ydb_config: "{{ ansible_config_file | dirname }}/files/config.yaml' }}"
+        ydb_config: "{{ ansible_config_file | dirname }}/files/config.yaml"
         ydb_tls_dir: "{{ ansible_config_file | dirname }}/../TLS/CA/certs/2024-05-03_07-25-00"
 
         ydb_user: root
