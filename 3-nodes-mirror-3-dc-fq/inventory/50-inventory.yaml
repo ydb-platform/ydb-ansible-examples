@@ -41,6 +41,7 @@ all:
         ydb_cores_dynamic: 8
         ydb_dynnodes:
           - { instance: 'a', offset: 0 }
+          - { instance: 'b', offset: 1 }
         ydb_brokers:
           - static-node-1.ydb-cluster.com
           - static-node-2.ydb-cluster.com
