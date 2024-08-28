@@ -1,0 +1,47 @@
+all:
+  children:
+    ydb:
+      hosts:
+        static-node-1.ydb-cluster.com:
+        static-node-2.ydb-cluster.com:
+        static-node-3.ydb-cluster.com:
+
+      vars:
+        ansible_user: ubuntu
+        ansible_ssh_common_args: "-o ProxyJump=ubuntu@static-node-1.ydb-cluster.com"
+        ansible_ssh_private_key_file: "~/yandex"
+
+        system_timezone: UTC
+        system_ntp_servers: [time.cloudflare.com, time.google.com, ntp.ripe.net, pool.ntp.org]
+
+        ydb_version: "24.2.7"
+        ydb_config: "{{ ansible_config_file | dirname + '/files/config.yaml' }}"
+        ydb_tls_dir: "../TLS/CA/certs/2024-05-03_07-25-00"
+
+        ydb_install_fq_connector: true
+        ydb_fq_connector_archive: "~/ydb-ansible-examples/fq-connector-go-v0.5.6-rc.2-linux-amd64.tar.gz"
+        ydb_fq_connector_config: "{{ ansible_config_file | dirname + '/files/fq_config.yaml' }}"
+        ydb_fq_connector_dir: "/opt/ydb_fq_connector"
+
+        ydb_user: root
+        ydb_cores_static: 8 
+        ydb_disks:
+          - name: /dev/vdb
+            label: ydb_disk_1
+          - name: /dev/vdc
+            label: ydb_disk_2
+          - name: /dev/vdd
+            label: ydb_disk_3
+        ydb_allow_format_drives: true
+        ydb_skip_data_loss_confirmation_prompt: false
+        ydb_domain: Root
+        ydb_dbname: database
+        ydb_pool_kind: ssd
+        ydb_database_groups: 8
+        ydb_cores_dynamic: 8
+        ydb_dynnodes:
+          - { instance: 'a', offset: 0 }
+        ydb_brokers:
+          - static-node-1.ydb-cluster.com
+          - static-node-2.ydb-cluster.com
+          - static-node-3.ydb-cluster.com
