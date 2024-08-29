@@ -20,7 +20,7 @@ all:
         ydb_tls_dir: "{{ ansible_config_file | dirname + '/files/certs' }}"
 
         ydb_install_fq_connector: true
-        ydb_fq_connector_archive: "{{ ansible_config_file | dirname + 'fq-connector-go.tar.gz' }}"
+        ydb_fq_connector_archive: "{{ ansible_config_file | dirname + '/fq-connector-go.tar.gz' }}"
         ydb_fq_connector_config: "{{ ansible_config_file | dirname + '/files/fq_config.yaml' }}"
         ydb_fq_connector_dir: "/opt/ydb_fq_connector"
         ydb_fq_connector_multislot: false
