@@ -14,9 +14,14 @@ all:
         system_timezone: UTC
         system_ntp_servers: [time.cloudflare.com, time.google.com, ntp.ripe.net, pool.ntp.org]
 
-        ydb_archive: "../ydbd-23.3.17-linux-amd64.tar.gz"
+        ydb_version: "24.2.7"
         ydb_config: "{{ ansible_config_file | dirname + '/files/config.yaml' }}"
-        ydb_tls_dir: "../TLS/CA/certs/2024-05-03_07-25-00"
+        ydb_tls_dir: "{{ ansible_config_file | dirname + '/files/certs' }}"
+
+        ydb_install_fq_connector: false
+        ydb_fq_connector_archive: "{{ ansible_config_file | dirname + '/fq-connector-go.tar.gz' }}"
+        ydb_fq_connector_config: "{{ ansible_config_file | dirname + '/files/fq-connector-go/config.yaml' }}"
+        ydb_fq_connector_dir: "/opt/ydb_fq_connector"
 
         ydb_user: root
         ydb_cores_static: 8 
