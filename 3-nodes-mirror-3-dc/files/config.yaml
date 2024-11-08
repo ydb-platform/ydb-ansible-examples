@@ -109,19 +109,6 @@ blob_storage_config:
           - node_id: static-node-3.ydb-cluster.com
             pdisk_category: SSD
             path: /dev/disk/by-partlabel/ydb_disk_3
-channel_profile_config:
-  profile:
-  - channel:
-    - erasure_species: mirror-3-dc
-      pdisk_category: 1   # 0=ROT, 1=SSD, 2=NVME
-      storage_pool_kind: ssd
-    - erasure_species: mirror-3-dc
-      pdisk_category: 1
-      storage_pool_kind: ssd
-    - erasure_species: mirror-3-dc
-      pdisk_category: 1
-      storage_pool_kind: ssd
-    profile_id: 0
 interconnect_config:
     start_tcp: true
     encryption_mode: OPTIONAL
