@@ -52,7 +52,7 @@ domains_config:
       nto_select: 3
     ssid: 1
   security_config:
-    enforce_user_token_requirement: true      # User 'root' with the empty password out of box
+    enforce_user_token_requirement: true
     monitoring_allowed_sids:
     - "root"
     - "ADMINS"
@@ -132,7 +132,6 @@ interconnect_config:
     path_to_private_key_file: "/opt/ydb/certs/node.key"
     path_to_ca_file: "/opt/ydb/certs/ca.crt"
 grpc_config:
-    ssl_port: 2135
     cert: "/opt/ydb/certs/node.crt"
     key: "/opt/ydb/certs/node.key"
     ca: "/opt/ydb/certs/ca.crt"

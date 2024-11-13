@@ -33,7 +33,7 @@ all:
         # ydb_request_client_certificate - control dynamic nodes authentication in cluster
         # values: false - Do not require specific TLS certificate
         #         true  - Require specific TLS certificate to join the cluster
-        # Default value: true (TODO change)
+        # Default value: true
         ydb_request_client_certificate: true
         ydb_domain: Root
         ydb_dbname: database
