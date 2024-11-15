@@ -143,7 +143,7 @@ auth_config:
 client_certificate_authorization:
   request_client_certificate: true
   client_certificate_definitions:
-      - member_groups: ["firstGroup@cert", "secondGroups@cert"]
+      - member_groups: ["databaseNodes@cert"]
         subject_terms:
         - short_name: "O"
           values: ["YDB"]
