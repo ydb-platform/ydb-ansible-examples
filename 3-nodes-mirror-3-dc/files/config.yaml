@@ -52,7 +52,7 @@ domains_config:
       nto_select: 3
     ssid: 1
   security_config:
-    enforce_user_token_requirement: false      # User 'root' with the empty password out of box
+    enforce_user_token_requirement: true
     monitoring_allowed_sids:
     - "root"
     - "ADMINS"
@@ -65,6 +65,9 @@ domains_config:
     - "root"
     - "ADMINS"
     - "DATABASE-ADMINS"
+    register_dynamic_node_allowed_sids:
+    - firstGroup@cert
+    - root@builtin
 blob_storage_config:
   service_set:
     groups:
@@ -134,5 +137,15 @@ grpc_config:
     ca: "/opt/ydb/certs/ca.crt"
     services_enabled:
     - legacy
+    - discovery
 auth_config:
   path_to_root_ca: /opt/ydb/certs/ca.crt    
+client_certificate_authorization:
+  request_client_certificate: true
+  client_certificate_definitions:
+      - member_groups: ["databaseNodes@cert"]
+        subject_terms:
+        - short_name: "O"
+          values: ["YDB"]
+        - short_name: "CN"
+          values: ["YDB CA"]
