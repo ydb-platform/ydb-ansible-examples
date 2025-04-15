@@ -33,7 +33,7 @@ all:
         # inventory_hostname1/node.csr
         ydb_tls_dir: "{{ ansible_config_file | dirname }}/../TLS/CA/certs/2024-05-03_07-25-00"
 
-        # ydb_archive - path to TAR.GZ archive with required binaries (ydb, ydbd). The srtucture of the archive is strict,
+        # ydb_archive - path to TAR.GZ archive with required binaries (ydb, ydbd). The structure of the archive is strict,
         # it must contain bin folder on the second level. 
         #     $> tar -ztf ydbd-24.2.7-linux-amd64.tar.gz
         #       ydbd-24.2.7-linux-amd64/
@@ -66,6 +66,25 @@ all:
         # ydb_cli_binary
         # ydbops_binary
         # ydb_dstool_binary
+        
+        # ydb_install_fq_connector - install fq-connector-go.
+        # See https://ydb.tech/docs/ru/devops/manual/federated-queries/connector-deployment
+        ydb_install_fq_connector: false
+
+        # ydb_fq_connector_version - version of fq-connector-go we want to install.
+        # This version will be taken from official repository
+        # See https://github.com/ydb-platform/fq-connector-go/releases
+        ydb_fq_connector_version: "v0.7.2-rc.5"
+
+        # ydb_fq_connector_archive - path to TAR.GZ archive with binary.
+        # ydb_fq_connector_archive: "{{ ansible_config_file | dirname }}/../fq-connector-go-v0.7.2-rc.5-linux-amd64.tar.gz"
+
+        # ydb_fq_connector_binary - path to the fq-connector-go binary file.
+        # ydb_fq_connector_binary: "{{ ansible_config_file | dirname }}/files/fq-connector-go"
+        
+        # ydb_fq_connector_config - path to fq-connector-go config. 
+        # It will be placed as it is.
+        ydb_fq_connector_config: "{{ ansible_config_file | dirname + '/files/fq-connector-go/config.yaml' }}"
 
         ydb_user: root
         ydb_cores_static: 8 
