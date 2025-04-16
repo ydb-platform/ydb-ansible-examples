@@ -149,3 +149,18 @@ client_certificate_authorization:
           values: ["YDB"]
         - short_name: "CN"
           values: ["YDB CA"]
+query_service_config:
+  generic:
+    connector:
+      endpoint:
+        host: localhost
+        port: 19102
+      use_ssl: false
+    default_settings:
+      - name: DateTimeFormat
+        value: string
+      - name: UsePredicatePushdown
+        value: "true"
+feature_flags:
+  enable_external_data_sources: true
+  enable_script_execution_operations: true
