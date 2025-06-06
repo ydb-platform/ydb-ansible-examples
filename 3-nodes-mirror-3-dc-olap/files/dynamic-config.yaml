@@ -1,0 +1,109 @@
+# Метаданные конфигурации.
+# Поле управляется сервером
+metadata:
+  # Имя кластера из параметра cluster_uuid, выставляемом при установке кластера, или "", если параметр не выставлен
+  cluster: ""
+  # Идентификатор конфигурационного файла, всегда возрастает на 1 и начинается с 1.
+  # Увеличивается автоматически при загрузке новой конфигурации на сервер.
+  version: 0
+# Основная конфигурация кластера, все значения из него применяются по-умолчанию, пока не переопределены селекторами.
+# Содержание аналогично статической конфигурации кластера
+config:
+# должен быть всегда выставлен в true для использования yaml конфигурации
+  yaml_config_enabled: true
+# конфигурация актор-системы, т.к. по-умолчанию данная секция используется только дин-нодами
+# выставлена конфигурация именно для ни
+  actor_system_config:
+# автоматический подбор конфигурации для ноды на основе типа и количества доступных ядер
+    use_auto_config: true
+# HYBRID || COMPUTE || STORAGE — тип ноды
+    node_type: COMPUTE
+# число ядер
+    cpu_count: 8
+  domains_config:
+    domain:
+    - name: Root
+      storage_pool_types:
+      - kind: ssd
+        pool_config:
+          box_id: 1
+          erasure_species: mirror-3-dc
+          kind: ssd
+          geometry:
+            realm_level_begin: 10
+            realm_level_end: 20
+            domain_level_begin: 10
+            domain_level_end: 256
+          pdisk_filter:
+          - property:
+            - type: SSD
+          vdisk_kind: Default
+    state_storage:
+    - ring:
+        node: [1, 2, 3]
+        nto_select: 3
+      ssid: 1
+    security_config:
+      enforce_user_token_requirement: false
+      monitoring_allowed_sids:
+      - "root"
+      - "ADMINS"
+      - "DATABASE-ADMINS"
+      administration_allowed_sids:
+      - "root"
+      - "ADMINS"
+      - "DATABASE-ADMINS"
+      - "robot-ydb-cp@staff"
+      viewer_allowed_sids:
+      - "root"
+      - "ADMINS"
+      - "DATABASE-ADMINS"
+  channel_profile_config:
+    profile:
+      - channel:
+        - erasure_species: mirror-3-dc
+          pdisk_category: 1   # 0=ROT, 1=SSD, 2=NVME
+          storage_pool_kind: ssd
+        - erasure_species: mirror-3-dc
+          pdisk_category: 1
+          storage_pool_kind: ssd
+        - erasure_species: mirror-3-dc
+          pdisk_category: 1
+          storage_pool_kind: ssd
+        profile_id: 0
+  interconnect_config:
+      start_tcp: true
+      encryption_mode: OPTIONAL
+      path_to_certificate_file: "/opt/ydb/certs/node.crt"
+      path_to_private_key_file: "/opt/ydb/certs/node.key"
+      path_to_ca_file: "/opt/ydb/certs/ca.crt"
+  grpc_config:
+      cert: "/opt/ydb/certs/node.crt"
+      key: "/opt/ydb/certs/node.key"
+      ca: "/opt/ydb/certs/ca.crt"
+      services_enabled:
+      - legacy
+      - discovery
+allowed_labels:
+  node_id:
+    type: string
+  host:
+    type: string
+  tenant:
+    type: string
+selector_config:
+  - description: config for OLAP
+    selector:
+      dynamic: true
+    config:
+      actor_system_config:
+        use_auto_config: true
+        node_type: COMPUTE
+        cpu_count: 8
+      memory_controller_config: !inherit
+        soft_limit_percent: 90
+        activities_limit_percent: 80
+        query_execution_limit_percent: 75
+        shared_cache_min_percent: 5
+        shared_cache_max_percent: 25
+        hard_limit_bytes: 128849018880
