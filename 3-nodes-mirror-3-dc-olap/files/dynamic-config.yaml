@@ -106,4 +106,3 @@ selector_config:
         query_execution_limit_percent: 75
         shared_cache_min_percent: 5
         shared_cache_max_percent: 25
-        hard_limit_bytes: 128849018880
