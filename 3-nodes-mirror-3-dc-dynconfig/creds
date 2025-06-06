@@ -1,0 +1,2 @@
+export YDB_USER=root
+export YDB_PASSWORD=password
