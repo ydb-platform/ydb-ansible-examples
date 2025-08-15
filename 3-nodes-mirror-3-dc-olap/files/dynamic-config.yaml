@@ -111,6 +111,7 @@ selector_config:
         sql_version: 1
         enable_olap_sink: true
         enable_spilling_nodes: "All"
+        enable_query_service_spilling: true
         spilling_service_config:
           local_file_config:
             enable: true
