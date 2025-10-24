@@ -69,7 +69,7 @@ domains_config:
     - "ADMINS"
     - "DATABASE-ADMINS"
     register_dynamic_node_allowed_sids:
-    - firstGroup@cert
+    - databaseNodes@cert
     - root@builtin
 blob_storage_config:
   service_set:
