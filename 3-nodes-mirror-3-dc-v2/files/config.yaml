@@ -1,0 +1,92 @@
+# YDB configuration options and their values
+# are described in documentaion https://ydb.tech/en/docs/deploy/configuration/config
+
+metadata:
+  kind: MainConfig
+  cluster: ""
+  version: 0
+config:
+  yaml_config_enabled: true
+  erasure: mirror-3-dc # erasue is the parameter that describes
+                       # the fault tolerance mode of the cluster.
+                       # See docs for more details https://ydb.tech/en/docs/deploy/configuration/config#domains-blob
+  fail_domain_type: disk
+  self_management_config: # automatic management of static resources (static group, state storage, etc)
+    enabled: true
+  default_disk_type: SSD # default disk type used for group creation of both kinds
+  host_configs: # the list of available host configurations in the cluster.
+  - host_config_id: 1
+    drive:
+    - path: /dev/disk/by-partlabel/ydb_disk_1    # path of the first disk in the host configration.
+      type: SSD                                       # kind of the disk: available kinds are SSD, NVME, HDD
+    - path: /dev/disk/by-partlabel/ydb_disk_2
+      type: SSD
+    - path: /dev/disk/by-partlabel/ydb_disk_3
+      type: SSD
+  hosts:
+  - host: static-node-1.ydb-cluster.com  # storage node DNS name
+    host_config_id: 1                 # numeric host configuration template identifier
+    location:                   # this parameter describes where host is located.
+      body: 1                         # string representing a host serial number.
+      data_center: 'zone-a'           # string representing the datacenter / availability zone where the host is located.
+                                      # if cluster is deployed using mirror-3-dc fault tolerance mode, all hosts must be distributed
+                                      # across 3 datacenters.
+      rack: '1'                       # string representing a rack identifier where the host is located.
+                                      # if cluster is deployed using block-4-2 erasure, all hosts should be distrubited
+                                      # accross at least 8 racks.
+  - host: static-node-2.ydb-cluster.com # storage node DNS name
+    host_config_id: 1                 # numeric host configuration template identifier
+    location:                   # this parameter describes where host is located.
+      body: 2                         # string representing a host serial number.
+      data_center: 'zone-b'           # string representing the datacenter / availability zone where the host is located.
+                                      # if cluster is deployed using mirror-3-dc fault tolerance mode, all hosts must be distributed
+                                      # across 3 datacenters.
+      rack: '1'                       # string representing a rack identifier where the host is located.
+                                      # if cluster is deployed using block-4-2 erasure, all hosts should be distrubited
+                                      # accross at least 8 racks.
+  - host: static-node-3.ydb-cluster.com  # storage node DNS name
+    host_config_id: 1                 # numeric host configuration template identifier
+    location:                   # this parameter describes where host is located.
+      body: 3                         # string representing a host serial number.
+      data_center: 'zone-d'           # string representing the datacenter / availability zone where the host is located.
+                                      # if cluster is deployed using mirror-3-dc fault tolerance mode, all hosts must be distributed
+                                      # across 3 datacenters.
+      rack: '1'                       # string representing a rack identifier where the host is located.
+                                      # if cluster is deployed using block-4-2 erasure, all hosts should be distrubited
+                                      # accross at least 8 racks.
+  actor_system_config:          # the configuration of the actor system which descibes how cores of the instance are distributed
+    use_auto_config: true       # accross different types of workloads in the instance.
+    cpu_count: 1
+  interconnect_config:
+    start_tcp: true
+    encryption_mode: OPTIONAL
+    path_to_certificate_file: "/opt/ydb/certs/node.crt"
+    path_to_private_key_file: "/opt/ydb/certs/node.key"
+    path_to_ca_file: "/opt/ydb/certs/ca.crt"
+  grpc_config:
+    cert: "/opt/ydb/certs/node.crt"
+    key: "/opt/ydb/certs/node.key"
+    ca: "/opt/ydb/certs/ca.crt"
+    services_enabled:
+    - legacy
+  domains_config:
+    domain:
+    - domain_id: 1
+      name: Root
+    security_config:
+      enforce_user_token_requirement: false
+      monitoring_allowed_sids:
+      - "root"
+      - "ADMINS"
+      - "DATABASE-ADMINS"
+      administration_allowed_sids:
+      - "root"
+      - "ADMINS"
+      - "DATABASE-ADMINS"
+      viewer_allowed_sids:
+      - "root"
+      - "ADMINS"
+      - "DATABASE-ADMINS"
+      register_dynamic_node_allowed_sids:
+      - databaseNodes@cert
+      - root@builtin
