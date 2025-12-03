@@ -73,13 +73,13 @@ all:
 
         ydb_user: root
         ydb_disks:
-          - name: /dev/sdc
+          - name: /dev/vdb
             label: ydb_disk_1
-          - name: /dev/sdd
+          - name: /dev/vdc
             label: ydb_disk_2
-          - name: /dev/sde
+          - name: /dev/vdd
             label: ydb_disk_3
-          - name: /dev/sdf
+          - name: /dev/vde
             label: ydb_disk_4
         ydb_allow_format_drives: true
         ydb_skip_data_loss_confirmation_prompt: false
