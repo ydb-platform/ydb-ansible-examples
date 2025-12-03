@@ -8,7 +8,7 @@ all:
 
       vars:
         ansible_user: ubuntu
-        ansible_ssh_common_args: "-o ProxyJump=ubuntu@static-node-1.ydb-cluster.com"
+        # ansible_ssh_common_args: "-o ProxyJump=ubuntu@static-node-1.ydb-cluster.com"
         ansible_ssh_private_key_file: "~/yandex"
 
         system_timezone: UTC
@@ -31,7 +31,7 @@ all:
         # inventory_hostname1/node.key
         # inventory_hostname1/web.pem
         # inventory_hostname1/node.csr
-        ydb_tls_dir: "{{ ansible_config_file | dirname }}/../TLS/CA/certs/2024-05-03_07-25-00"
+        ydb_tls_dir: "{{ ansible_config_file | dirname }}/certs"
 
         # ydb_archive - path to TAR.GZ archive with required binaries (ydb, ydbd). The structure of the archive is strict,
         # it must contain bin folder on the second level. 
@@ -40,11 +40,11 @@ all:
         #       ydbd-24.2.7-linux-amd64/bin/
         #       ydbd-24.2.7-linux-amd64/bin/ydbd
         #       ydbd-24.2.7-linux-amd64/bin/ydb
-        ydb_archive: "{{ ansible_config_file | dirname }}/../ydbd-23.3.17-linux-amd64.tar.gz"
+        #ydb_archive: "{{ ansible_config_file | dirname }}/../ydbd-23.3.17-linux-amd64.tar.gz"
 
         # ydb_version - version of YDB we want to install. This version will be taken 
         # from official repository if no other options are defined
-        ydb_version: "24.2.7" # "24.1.18" # 24.2.7
+        ydb_version: "24.4.4.12" # "24.1.18" # 24.2.7
 
         # ydbd_binary - path to the YDB server binary file. `ydb_version`,`ydb_cli_binary` are required to be defined with this option
         # Example:
@@ -87,7 +87,6 @@ all:
         ydb_fq_connector_config: "{{ ansible_config_file | dirname + '/files/fq-connector-go/config.yaml' }}"
 
         ydb_user: root
-        ydb_cores_static: 8 
         ydb_disks:
           - name: /dev/vdb
             label: ydb_disk_1
@@ -107,10 +106,11 @@ all:
         ydb_dbname: database
         ydb_pool_kind: ssd
         ydb_database_groups: 8
+        ydb_cores_static: 8 
         ydb_cores_dynamic: 8
         ydb_dynnodes:
-          - { instance: 'a', offset: 0 }
-          - { instance: 'b', offset: 1 }
+          - { instance: 'a', offset: 1 }
+          - { instance: 'b', offset: 2 }
         ydb_brokers:
           - static-node-1.ydb-cluster.com
           - static-node-2.ydb-cluster.com
