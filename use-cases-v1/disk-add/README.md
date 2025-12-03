@@ -1,4 +1,4 @@
-# Disk add
+# Add new hard drive
 
 ## Requirements
 
@@ -14,3 +14,4 @@
 6. Provide permission to use new drives `ansible-playbook ydb_platform.ydb.update_config --extra-vars "ydb_storage_update_config=true" --tag storage --skip-tags restart`
 ![step6](img/step6.png)
 7. Add additional storage groups to a database `ansible-playbook ydb_platform.ydb.run_ydbd --extra-vars 'cmd="admin database /Root/database pools add ssd:1"`
+![step7](img/step7.png)
