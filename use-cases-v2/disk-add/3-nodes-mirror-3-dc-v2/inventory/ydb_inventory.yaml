@@ -1,0 +1,12 @@
+---
+
+plugin: ydb_platform.ydb.ydb_inventory
+# ydb_config - path to YDB config. 
+# It will be used as:
+# - the source for Ansible inventory
+# - YDB cluster config
+#
+# This file must has empty line at the end
+ydb_config: "files/config.yaml"
+
+
