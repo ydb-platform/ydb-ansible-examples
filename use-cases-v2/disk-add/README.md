@@ -7,8 +7,8 @@
 ![step0](img/step0.png)
 
 ## Steps
-1. Update inventory/50-inventory.yaml and add new hard drive into `ydb_disks` variable with new label
-2. Update files/config.yaml and add new hard drive label in into `host_configs.drives` section 
+1. Update inventory/group_vars/ydb/all.yaml and add new hard drive into `ydb_disks` variable with new label
+2. Update files/config.yaml and add new hard drive label in into `config.host_configs` section 
 3. Prepare new hard disk for usage `ansible-playbook ydb_platform.ydb.prepare_drives --extra-vars "ydb_disk_prepare=ydb_disk_4"` where ydb_disk_prepare must contains new hard drive label
 4. Update config for every node and restart cluster `ansible-playbook ydb_platform.ydb.update_config`
 5. Check cluster health `ansible-playbook ydb_platform.ydb.healthcheck`

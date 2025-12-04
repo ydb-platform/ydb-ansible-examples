@@ -23,6 +23,8 @@ config:
       type: SSD
     - path: /dev/disk/by-partlabel/ydb_disk_3
       type: SSD
+    - path: /dev/disk/by-partlabel/ydb_disk_4
+      type: SSD
   hosts:
   - host: static-node-1.ydb-cluster.com  # storage node DNS name
     host_config_id: 1                 # numeric host configuration template identifier

@@ -26,6 +26,8 @@ ydb_disks:
     label: ydb_disk_2
   - name: /dev/sde
     label: ydb_disk_3
+  - name: /dev/sdf
+    label: ydb_disk_4
 ydb_pool_kind: ssd
 
 ydb_allow_format_drives: true
