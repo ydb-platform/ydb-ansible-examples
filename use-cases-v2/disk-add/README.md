@@ -19,3 +19,4 @@ ydb_disk_1  ydb_disk_2  ydb_disk_3  ydb_disk_4
 5. Check cluster health `ansible-playbook ydb_platform.ydb.healthcheck`
 6. Add additional storage groups to a database `ansible-playbook ydb_platform.ydb.run_dstool --extra-vars 'cmd="group add --pool-name /Root/db:ssd --groups 1"'`
 ![step6](img/step6.png)
+![step7](img/step7.png)
