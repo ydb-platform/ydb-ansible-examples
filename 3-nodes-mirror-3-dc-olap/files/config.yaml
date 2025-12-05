@@ -150,5 +150,3 @@ client_certificate_authorization:
         subject_terms:
         - short_name: "O"
           values: ["YDB"]
-        - short_name: "CN"
-          values: ["YDB CA"]
