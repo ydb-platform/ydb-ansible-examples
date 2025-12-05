@@ -161,8 +161,6 @@ client_certificate_authorization:
         subject_terms:
         - short_name: "O"
           values: ["YDB"]
-        - short_name: "CN"
-          values: ["YDB CA"]
 # actor_system_config:          # the configuration of the actor system which descibes how cores of the instance are distributed
 #   executor:                   # accross different types of workloads in the instance.
 #   - name: System              # system executor of the actor system. in this executor YDB launches system type of workloads, like system tablets
