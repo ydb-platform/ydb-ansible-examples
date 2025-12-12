@@ -1,4 +1,4 @@
-# Add new hard drive
+# Add new storage node
 
 ## Requirements
 
