@@ -10,6 +10,10 @@ config:
   erasure: mirror-3-dc # erasue is the parameter that describes
                        # the fault tolerance mode of the cluster.
                        # See docs for more details https://ydb.tech/en/docs/deploy/configuration/config#domains-blob
+  bridge_config:
+    piles:
+    - name: dc1
+    - name: dc2
   fail_domain_type: disk
   self_management_config: # automatic management of static resources (static group, state storage, etc)
     enabled: true
@@ -23,42 +27,57 @@ config:
       type: SSD
     - path: /dev/disk/by-partlabel/ydb_disk_3
       type: SSD
-    - path: /dev/disk/by-partlabel/ydb_disk_4
-      type: SSD
   hosts:
   - host: static-node-1.ydb-cluster.com  # storage node DNS name
     host_config_id: 1                 # numeric host configuration template identifier
     location:                   # this parameter describes where host is located.
       body: 1                         # string representing a host serial number.
+      bridge_pile_name: dc1
       data_center: 'zone-a'           # string representing the datacenter / availability zone where the host is located.
                                       # if cluster is deployed using mirror-3-dc fault tolerance mode, all hosts must be distributed
                                       # across 3 datacenters.
-      rack: '1'                       # string representing a rack identifier where the host is located.
-                                      # if cluster is deployed using block-4-2 erasure, all hosts should be distrubited
-                                      # accross at least 8 racks.
   - host: static-node-2.ydb-cluster.com # storage node DNS name
     host_config_id: 1                 # numeric host configuration template identifier
     location:                   # this parameter describes where host is located.
       body: 2                         # string representing a host serial number.
+      bridge_pile_name: dc1
       data_center: 'zone-b'           # string representing the datacenter / availability zone where the host is located.
                                       # if cluster is deployed using mirror-3-dc fault tolerance mode, all hosts must be distributed
                                       # across 3 datacenters.
-      rack: '2'                       # string representing a rack identifier where the host is located.
-                                      # if cluster is deployed using block-4-2 erasure, all hosts should be distrubited
-                                      # accross at least 8 racks.
   - host: static-node-3.ydb-cluster.com  # storage node DNS name
     host_config_id: 1                 # numeric host configuration template identifier
     location:                   # this parameter describes where host is located.
       body: 3                         # string representing a host serial number.
+      bridge_pile_name: dc1
       data_center: 'zone-d'           # string representing the datacenter / availability zone where the host is located.
                                       # if cluster is deployed using mirror-3-dc fault tolerance mode, all hosts must be distributed
                                       # across 3 datacenters.
-      rack: '3'                       # string representing a rack identifier where the host is located.
-                                      # if cluster is deployed using block-4-2 erasure, all hosts should be distrubited
-                                      # accross at least 8 racks.
+  - host: static-node-4.ydb-cluster.com  # storage node DNS name
+    host_config_id: 1                 # numeric host configuration template identifier
+    location:                   # this parameter describes where host is located.
+      body: 4                         # string representing a host serial number.
+      bridge_pile_name: dc2
+      data_center: 'zone-a'           # string representing the datacenter / availability zone where the host is located.
+                                      # if cluster is deployed using mirror-3-dc fault tolerance mode, all hosts must be distributed
+                                      # across 3 datacenters.
+  - host: static-node-5.ydb-cluster.com # storage node DNS name
+    host_config_id: 1                 # numeric host configuration template identifier
+    location:                   # this parameter describes where host is located.
+      body: 5                         # string representing a host serial number.
+      bridge_pile_name: dc2
+      data_center: 'zone-b'           # string representing the datacenter / availability zone where the host is located.
+                                      # if cluster is deployed using mirror-3-dc fault tolerance mode, all hosts must be distributed
+                                      # across 3 datacenters.
+  - host: static-node-6.ydb-cluster.com  # storage node DNS name
+    host_config_id: 1                 # numeric host configuration template identifier
+    location:                   # this parameter describes where host is located.
+      body: 6                         # string representing a host serial number.
+      bridge_pile_name: dc2
+      data_center: 'zone-d'           # string representing the datacenter / availability zone where the host is located.
+                                      # if cluster is deployed using mirror-3-dc fault tolerance mode, all hosts must be distributed
+                                      # across 3 datacenters.
   actor_system_config:          # the configuration of the actor system which descibes how cores of the instance are distributed
     use_auto_config: true       # accross different types of workloads in the instance.
-    cpu_count: 1
   interconnect_config:
     start_tcp: true
     encryption_mode: OPTIONAL
@@ -71,3 +90,19 @@ config:
     ca: "/opt/ydb/certs/ca.crt"
     services_enabled:
     - legacy
+    - discovery
+selector_config:
+- config:
+    actor_system_config: !inherit
+      cpu_count: 2
+      node_type: COMPUTE
+  description: Actorsystem for database nodes
+  selector:
+    dynamic: true
+- config:
+    actor_system_config: !inherit
+      cpu_count: 2
+      node_type: STORAGE
+  description: Actorsystem for storage nodes
+  selector:
+    dynamic: false

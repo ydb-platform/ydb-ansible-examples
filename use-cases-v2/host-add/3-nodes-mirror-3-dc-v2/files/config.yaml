@@ -56,6 +56,16 @@ config:
       rack: '3'                       # string representing a rack identifier where the host is located.
                                       # if cluster is deployed using block-4-2 erasure, all hosts should be distrubited
                                       # accross at least 8 racks.
+  - host: static-node-4.ydb-cluster.com  # storage node DNS name
+    host_config_id: 1                 # numeric host configuration template identifier
+    location:                   # this parameter describes where host is located.
+      body: 4                         # string representing a host serial number.
+      data_center: 'zone-d'           # string representing the datacenter / availability zone where the host is located.
+                                      # if cluster is deployed using mirror-3-dc fault tolerance mode, all hosts must be distributed
+                                      # across 3 datacenters.
+      rack: '4'                       # string representing a rack identifier where the host is located.
+                                      # if cluster is deployed using block-4-2 erasure, all hosts should be distrubited
+                                      # accross at least 8 racks.
   actor_system_config:          # the configuration of the actor system which descibes how cores of the instance are distributed
     use_auto_config: true       # accross different types of workloads in the instance.
     cpu_count: 1
@@ -71,3 +81,4 @@ config:
     ca: "/opt/ydb/certs/ca.crt"
     services_enabled:
     - legacy
+
