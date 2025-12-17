@@ -133,6 +133,11 @@ all:
         # Default value: true
         ydbops_local: true
 
+        ydb_brokers:
+          - static-node-1.ydb-cluster.com
+          - static-node-3.ydb-cluster.com
+          - static-node-5.ydb-cluster.com
+
         # ydb_config - path to YDB config for static and dynamic nodes. 
         # It will be placed as it is. Only actor settings will be added.
         # This file must has empty line at the end
