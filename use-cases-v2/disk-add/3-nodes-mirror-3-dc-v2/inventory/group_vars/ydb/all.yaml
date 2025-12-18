@@ -1,0 +1,49 @@
+---
+
+ansible_user: ubuntu
+#ansible_ssh_common_args: "-o ProxyJump=ubuntu@static-node-1.ydb-cluster.com"
+ansible_ssh_private_key_file: "~/yandex"
+
+system_timezone: UTC
+system_ntp_servers: [time.cloudflare.com, time.google.com, ntp.ripe.net, pool.ntp.org]
+ydb_dynnodes:
+  - {"instance": "a", offset: 1}
+# Examples
+#  - {"instance": "b", offset: 2, dbname: "db", affinity: "2,3"}
+#  - {"instance": "c", offset: 3, dbname: "db2"}
+
+ydb_tls_dir: "{{ ansible_config_file | dirname }}/files/certs"
+
+ydb_user: root
+
+ydb_dbname: db
+
+# Phisycal disk mapping
+ydb_disks:
+  - name: /dev/vdb
+    label: ydb_disk_1
+  - name: /dev/vdc
+    label: ydb_disk_2
+  - name: /dev/vdd
+    label: ydb_disk_3
+  - name: /dev/vde
+    label: ydb_disk_4
+ydb_pool_kind: ssd
+
+ydb_allow_format_drives: true
+ydb_skip_data_loss_confirmation_prompt: true
+ydbops_local: true
+ydb_cores_dynamic: 2
+ydb_cores_static:  2
+
+# ----------------------------------------------------------------------
+# BINARY / PACKAGE SETTINGS
+#
+# ydb_archive: "{{ ansible_config_file | dirname }}/files/ydbd-25.1.4.7-linux-amd64.tar.gz"
+ydb_version: "25.1.4.7"
+#ydbd_binary: "{{ ansible_config_file | dirname }}/files/ydbd"
+#ydb_cli_binary: "{{ ansible_config_file | dirname }}/files/ydb"
+
+#ydbops_binary: "{{ ansible_config_file | dirname }}/files/ydbops"
+#ydb_dstool_binary: "{{ ansible_config_file | dirname }}/files/ydb-dstool"
+# ----------------------------------------------------------------------

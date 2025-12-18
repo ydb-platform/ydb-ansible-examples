@@ -28,7 +28,7 @@ all:
             pile: 'dc2'
       vars:
         ansible_user: ubuntu
-        ansible_ssh_common_args: "-o ProxyJump=ubuntu@static-node-1.ydb-cluster.com"
+        # ansible_ssh_common_args: "-o ProxyJump=ubuntu@static-node-1.ydb-cluster.com"
         ansible_ssh_private_key_file: "~/yandex"
 
         system_timezone: UTC
@@ -48,7 +48,7 @@ all:
         # inventory_hostname1/node.key
         # inventory_hostname1/web.pem
         # inventory_hostname1/node.csr
-        ydb_tls_dir: "{{ ansible_config_file | dirname }}/../TLS/CA/certs/2025-09-10_10-58-24"
+        ydb_tls_dir: "{{ ansible_config_file | dirname }}/../certs"
 
         # ydb_archive - path to TAR.GZ archive with required binaries (ydb, ydbd). The structure of the archive is strict,
         # it must contain bin folder on the second level. 
@@ -62,21 +62,21 @@ all:
         # ydb_version - version of YDB we want to install. This version will be taken 
         # from official repository if no other options are defined
         # For 2DC you must use YDB version 25.1 or upper version.
-        ydb_version: "25.1.2"
+        ydb_version: "25.3.1"
 
         # ydbd_binary - path to the YDB server binary file. `ydb_version`,`ydb_cli_binary` are required to be defined with this option
         # Example:
-        ydbd_binary: "{{ ansible_config_file | dirname }}/files/ydbd"
+        ydbd_binary: "{{ ansible_config_file | dirname }}/../files/stable-25-3/ydbd"
 
         # ydb_cli_binary - path to the YDB CLI binary file. `ydb_version`,`ydbd_binary` are required to be defined with this option
         # Example:
-        ydb_cli_binary: "{{ ansible_config_file | dirname }}/files/ydb"
+        ydb_cli_binary: "{{ ansible_config_file | dirname }}/../files/stable-25-3/ydb"
 
         # ydbops_binary - path to YDBOps binary file
-        ydbops_binary: "{{ ansible_config_file | dirname }}/files/ydbops"
+        ydbops_binary: "{{ ansible_config_file | dirname }}/../files/stable-25-3/ydbops"
 
         # ydb_dstool_binary - path to YDB DSTool binary file
-        ydb_dstool_binary: "{{ ansible_config_file | dirname }}/files/ydb-dstool"
+        ydb_dstool_binary: "{{ ansible_config_file | dirname }}/../files/stable-25-3/ydb-dstool"
 
         # Set of settings for isolated mode
         # ydb_version
@@ -104,10 +104,10 @@ all:
         # It will be placed as it is.
         ydb_fq_connector_config: "{{ ansible_config_file | dirname + '/files/fq-connector-go/config.yaml' }}"
 
-        ydb_storage_node_cores: 2
-        ydb_database_node_cores: 2
+        ydb_cores_static: 2
+        ydb_cores_dynamic: 2
         # Storage
-        ydb_database_storage_groups: 8
+        ydb_database_groups: 2
         ydb_disks:
           - name: /dev/vdb
             label: ydb_disk_1
@@ -117,11 +117,13 @@ all:
             label: ydb_disk_3
         ydb_allow_format_drives: true
         ydb_skip_data_loss_confirmation_prompt: true
+        ydb_enforce_user_token_requirement: false
 
         # Database
         ydb_user: root
         ydb_domain: Root
-        ydb_database_name: db
+        ydb_dbname: db
+        ydb_pool_kind: ssd
         ydb_dynnodes:
           - { instance: 'a', offset: 1}
         #  - { instance: 'b', offset: 2, dbname: db }
@@ -131,14 +133,18 @@ all:
         # Default value: true
         ydbops_local: true
 
+        ydb_brokers:
+          - static-node-1.ydb-cluster.com
+          - static-node-3.ydb-cluster.com
+          - static-node-5.ydb-cluster.com
+
+        # ydb_config - path to YDB config for static and dynamic nodes. 
+        # It will be placed as it is. Only actor settings will be added.
+        # This file must has empty line at the end
+        ydb_config: "{{ ansible_config_file | dirname }}/files/config.yaml"
+
+        # Define version of YDB Configuration file
+        # V1 - ydb_config_v2: false (default)
+        # V2 - ydb_config_v2: true
         ydb_config_v2: true
-        # ydb_config - Special descriptions for the YDB cluster
-        # Variables will be placed as it is
-        ydb_config:
-          erasure: mirror-3-dc
-          fail_domain_type: disk
-          default_disk_type: SSD
-          bridge_config:
-            piles:
-              - name: dc1
-              - name: dc2
+

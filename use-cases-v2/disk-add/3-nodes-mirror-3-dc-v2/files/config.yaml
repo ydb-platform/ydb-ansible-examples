@@ -23,6 +23,8 @@ config:
       type: SSD
     - path: /dev/disk/by-partlabel/ydb_disk_3
       type: SSD
+    - path: /dev/disk/by-partlabel/ydb_disk_4
+      type: SSD
   hosts:
   - host: static-node-1.ydb-cluster.com  # storage node DNS name
     host_config_id: 1                 # numeric host configuration template identifier
@@ -41,7 +43,7 @@ config:
       data_center: 'zone-b'           # string representing the datacenter / availability zone where the host is located.
                                       # if cluster is deployed using mirror-3-dc fault tolerance mode, all hosts must be distributed
                                       # across 3 datacenters.
-      rack: '1'                       # string representing a rack identifier where the host is located.
+      rack: '2'                       # string representing a rack identifier where the host is located.
                                       # if cluster is deployed using block-4-2 erasure, all hosts should be distrubited
                                       # accross at least 8 racks.
   - host: static-node-3.ydb-cluster.com  # storage node DNS name
@@ -51,7 +53,7 @@ config:
       data_center: 'zone-d'           # string representing the datacenter / availability zone where the host is located.
                                       # if cluster is deployed using mirror-3-dc fault tolerance mode, all hosts must be distributed
                                       # across 3 datacenters.
-      rack: '1'                       # string representing a rack identifier where the host is located.
+      rack: '3'                       # string representing a rack identifier where the host is located.
                                       # if cluster is deployed using block-4-2 erasure, all hosts should be distrubited
                                       # accross at least 8 racks.
   actor_system_config:          # the configuration of the actor system which descibes how cores of the instance are distributed
@@ -69,21 +71,3 @@ config:
     ca: "/opt/ydb/certs/ca.crt"
     services_enabled:
     - legacy
-  domains_config:
-    security_config:
-      enforce_user_token_requirement: false
-      monitoring_allowed_sids:
-      - "root"
-      - "ADMINS"
-      - "DATABASE-ADMINS"
-      administration_allowed_sids:
-      - "root"
-      - "ADMINS"
-      - "DATABASE-ADMINS"
-      viewer_allowed_sids:
-      - "root"
-      - "ADMINS"
-      - "DATABASE-ADMINS"
-      register_dynamic_node_allowed_sids:
-      - databaseNodes@cert
-      - root@builtin

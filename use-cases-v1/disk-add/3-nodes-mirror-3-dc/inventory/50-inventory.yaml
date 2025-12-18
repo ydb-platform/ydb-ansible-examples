@@ -55,7 +55,7 @@ all:
         # ydb_cli_binary: "{{ ansible_config_file | dirname }}/files/ydb"
 
         # ydbops_binary - path to YDBOps binary file
-        # ydbops_binary: "{{ ansible_config_file | dirname }}/files/ydbops"
+        ydbops_binary: "{{ ansible_config_file | dirname }}/files/ydbops"
 
         # ydb_dstool_binary - path to YDB DSTool binary file
         # ydb_dstool_binary: "{{ ansible_config_file | dirname }}/files/ydb-dstool"
@@ -71,21 +71,6 @@ all:
         # See https://ydb.tech/docs/ru/devops/manual/federated-queries/connector-deployment
         ydb_install_fq_connector: false
 
-        # ydb_fq_connector_version - version of fq-connector-go we want to install.
-        # This version will be taken from official repository
-        # See https://github.com/ydb-platform/fq-connector-go/releases
-        ydb_fq_connector_version: "v0.7.2-rc.5"
-
-        # ydb_fq_connector_archive - path to TAR.GZ archive with binary.
-        # ydb_fq_connector_archive: "{{ ansible_config_file | dirname }}/../fq-connector-go-v0.7.2-rc.5-linux-amd64.tar.gz"
-
-        # ydb_fq_connector_binary - path to the fq-connector-go binary file.
-        # ydb_fq_connector_binary: "{{ ansible_config_file | dirname }}/files/fq-connector-go"
-        
-        # ydb_fq_connector_config - path to fq-connector-go config. 
-        # It will be placed as it is.
-        ydb_fq_connector_config: "{{ ansible_config_file | dirname + '/files/fq-connector-go/config.yaml' }}"
-
         ydb_user: root
         ydb_disks:
           - name: /dev/vdb
@@ -94,6 +79,8 @@ all:
             label: ydb_disk_2
           - name: /dev/vdd
             label: ydb_disk_3
+          - name: /dev/vde
+            label: ydb_disk_4
         ydb_allow_format_drives: true
         ydb_skip_data_loss_confirmation_prompt: false
         ydb_enforce_user_token_requirement: true

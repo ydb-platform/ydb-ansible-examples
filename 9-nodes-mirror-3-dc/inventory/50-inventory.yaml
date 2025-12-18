@@ -50,6 +50,7 @@ all:
             label: ydb_disk_1
         ydb_allow_format_drives: true
         ydb_skip_data_loss_confirmation_prompt: false
+        ydb_enforce_user_token_requirement: false
         ydb_domain: Root
         ydb_dbname: database
         ydb_pool_kind: ssd
