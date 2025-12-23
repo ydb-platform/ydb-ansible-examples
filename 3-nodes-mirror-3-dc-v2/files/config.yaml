@@ -80,7 +80,6 @@ config:
         values: ["YDB"]
   domains_config:
     security_config:
-      enforce_user_token_requirement: false
       monitoring_allowed_sids:
       - "root"
       - "ADMINS"
