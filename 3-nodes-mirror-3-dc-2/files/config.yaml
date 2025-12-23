@@ -1,0 +1,82 @@
+config:
+  actor_system_config:
+    cpu_count: 8
+    use_auto_config: true
+  default_disk_type: SSD
+  erasure: mirror-3-dc
+  fail_domain_type: disk
+  grpc_config:
+    ca: /opt/ydb/certs/ca.crt
+    cert: /opt/ydb/certs/node.crt
+    key: /opt/ydb/certs/node.key
+    services_enabled:
+    - legacy
+  host_configs:
+  - drive:
+    - path: /dev/disk/by-partlabel/ydb_disk_1
+      type: SSD
+    - path: /dev/disk/by-partlabel/ydb_disk_2
+      type: SSD
+    - path: /dev/disk/by-partlabel/ydb_disk_3
+      type: SSD
+    host_config_id: 1
+  hosts:
+  - host: static-node-1.ydb-cluster.com
+    host_config_id: 1
+    location:
+      body: 1
+      data_center: zone-a
+      rack: '1'
+  - host: static-node-2.ydb-cluster.com
+    host_config_id: 1
+    location:
+      body: 2
+      data_center: zone-b
+      rack: '2'
+  - host: static-node-3.ydb-cluster.com
+    host_config_id: 1
+    location:
+      body: 3
+      data_center: zone-c
+      rack: '3'
+  interconnect_config:
+    encryption_mode: OPTIONAL
+    path_to_ca_file: /opt/ydb/certs/ca.crt
+    path_to_certificate_file: /opt/ydb/certs/node.crt
+    path_to_private_key_file: /opt/ydb/certs/node.key
+    start_tcp: true
+  self_management_config:
+    enabled: true
+  tls:
+    ca: /opt/ydb/certs/ca.crt
+    cert: /opt/ydb/certs/node.crt
+    key: /opt/ydb/certs/node.key
+  yaml_config_enabled: true
+  security_config:
+    enforce_user_token_requirement: true
+  client_certificate_authorization:
+    request_client_certificate: true
+    client_certificate_definitions:
+    - member_groups: ["ADMINS"]
+      subject_terms:
+      - short_name: "O"
+        values: ["YDB"]
+metadata:
+  cluster: ''
+  kind: MainConfig
+  version: 0
+selector_config:
+- config:
+    actor_system_config: !inherit
+      cpu_count: 2
+      node_type: COMPUTE
+  description: Actorsystem for database nodes
+  selector:
+    dynamic: true
+- config:
+    actor_system_config: !inherit
+      cpu_count: 2
+      node_type: STORAGE
+  description: Actorsystem for storage nodes
+  selector:
+    dynamic: false
