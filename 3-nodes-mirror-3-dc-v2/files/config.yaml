@@ -69,6 +69,15 @@ config:
     ca: "/opt/ydb/certs/ca.crt"
     services_enabled:
     - legacy
+  security_config:
+    enforce_user_token_requirement: true
+  client_certificate_authorization:
+    request_client_certificate: true
+    client_certificate_definitions:
+    - member_groups: ["ADMINS"]
+      subject_terms:
+      - short_name: "O"
+        values: ["YDB"]
   domains_config:
     security_config:
       enforce_user_token_requirement: false
