@@ -70,9 +70,9 @@ config:
     services_enabled:
     - legacy
   security_config:
-    enforce_user_token_requirement: true
+    enforce_user_token_requirement: false
   client_certificate_authorization:
-    request_client_certificate: true
+    request_client_certificate: false
     client_certificate_definitions:
     - member_groups: ["ADMINS"]
       subject_terms:
