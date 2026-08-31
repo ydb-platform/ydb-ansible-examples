@@ -1,0 +1,102 @@
+# YDB configuration options and their values
+# are described in documentaion https://ydb.tech/en/docs/deploy/configuration/config
+
+metadata:
+  kind: MainConfig
+  cluster: ""
+  version: 0
+config:
+  yaml_config_enabled: true
+  erasure: none
+  bridge_config:
+    piles:
+    - name: dc1
+    - name: dc2
+  fail_domain_type: disk
+  self_management_config: # automatic management of static resources (static group, state storage, etc)
+    enabled: true
+  default_disk_type: SSD # default disk type used for group creation of both kinds
+  host_configs: # the list of available host configurations in the cluster.
+  - host_config_id: 1
+    drive:
+    - path: /dev/disk/by-partlabel/ydb_disk_1    # path of the first disk in the host configration.
+      type: SSD                                       # kind of the disk: available kinds are SSD, NVME, ROT
+  hosts:
+  - host: static-node-1.ydb-cluster.com  # storage node DNS name
+    host_config_id: 1                 # numeric host configuration template identifier
+    location:                   # this parameter describes where host is located.
+      body: 1                         # string representing a host serial number.
+      bridge_pile_name: dc1
+      data_center: 'zone-a'           # string representing the datacenter / availability zone where the host is located.
+                                      # if cluster is deployed using mirror-3-dc fault tolerance mode, all hosts must be distributed
+                                      # across 3 datacenters.
+  - host: static-node-2.ydb-cluster.com # storage node DNS name
+    host_config_id: 1                 # numeric host configuration template identifier
+    location:                   # this parameter describes where host is located.
+      body: 2                         # string representing a host serial number.
+      bridge_pile_name: dc2
+      data_center: 'zone-b'           # string representing the datacenter / availability zone where the host is located.
+                                      # if cluster is deployed using mirror-3-dc fault tolerance mode, all hosts must be distributed
+                                      # across 3 datacenters.
+  actor_system_config:          # the configuration of the actor system which descibes how cores of the instance are distributed
+    use_auto_config: true       # accross different types of workloads in the instance.
+  interconnect_config:
+    start_tcp: true
+    encryption_mode: OPTIONAL
+    path_to_certificate_file: "/opt/ydb/certs/node.crt"
+    path_to_private_key_file: "/opt/ydb/certs/node.key"
+    path_to_ca_file: "/opt/ydb/certs/ca.crt"
+  grpc_config:
+    cert: "/opt/ydb/certs/node.crt"
+    key: "/opt/ydb/certs/node.key"
+    ca: "/opt/ydb/certs/ca.crt"
+    services_enabled:
+    - legacy
+    - discovery
+  security_config:
+    enforce_user_token_requirement: true
+    monitoring_allowed_sids:
+    - "root"
+    - "ADMINS"
+    - "DATABASE-ADMINS"
+    administration_allowed_sids:
+    - "root"
+    - "ADMINS"
+    - "DATABASE-ADMINS"
+    viewer_allowed_sids:
+    - "root"
+    - "ADMINS"
+    - "DATABASE-ADMINS"
+    register_dynamic_node_allowed_sids:
+    - databaseNodes@cert
+    - root@builtin
+    bootstrap_allowed_sids:
+    - "root"
+    - "ADMINS"
+    - "DATABASE-ADMINS"
+  client_certificate_authorization:
+    request_client_certificate: true
+    client_certificate_definitions:
+        - member_groups: ["ADMINS"]
+          subject_terms:
+          - short_name: "O"
+            values: ["YDB"]
+        - member_groups: ["databaseNodes@cert"]
+          subject_terms:
+          - short_name: "O"
+            values: ["YDB"]
+selector_config:
+- config:
+    actor_system_config: !inherit
+      cpu_count: 2
+      node_type: COMPUTE
+  description: Actorsystem for database nodes
+  selector:
+    dynamic: true
+- config:
+    actor_system_config: !inherit
+      cpu_count: 2
+      node_type: STORAGE
+  description: Actorsystem for storage nodes
+  selector:
+    dynamic: false

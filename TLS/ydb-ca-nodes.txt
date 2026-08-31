@@ -7,3 +7,10 @@ static-node-6 static-node-6.ydb-cluster.com
 static-node-7 static-node-7.ydb-cluster.com
 static-node-8 static-node-8.ydb-cluster.com
 static-node-9 static-node-9.ydb-cluster.com
+static-node-10 static-node-10.ydb-cluster.com
+static-node-11 static-node-11.ydb-cluster.com
+static-node-12 static-node-12.ydb-cluster.com
+static-node-13 static-node-13.ydb-cluster.com
+static-node-14 static-node-14.ydb-cluster.com
+static-node-15 static-node-15.ydb-cluster.com
+static-node-16 static-node-16.ydb-cluster.com
