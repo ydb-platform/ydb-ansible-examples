@@ -1,0 +1,99 @@
+all:
+  children:
+    ydb:
+      hosts:
+        static-node-1.ydb-cluster.com:
+          location:
+            data_center: 'zone-a'
+            pile: 'dc1'
+        static-node-2.ydb-cluster.com:
+          location:
+            data_center: 'zone-a'
+            pile: 'dc1'
+        static-node-3.ydb-cluster.com:
+          location:
+            data_center: 'zone-a'
+            pile: 'dc1'
+        static-node-4.ydb-cluster.com:
+          location:
+            data_center: 'zone-a'
+            pile: 'dc1'
+        static-node-5.ydb-cluster.com:
+          location:
+            data_center: 'zone-a'
+            pile: 'dc1'
+        static-node-6.ydb-cluster.com:
+          location:
+            data_center: 'zone-a'
+            pile: 'dc1'
+        static-node-7.ydb-cluster.com:
+          location:
+            data_center: 'zone-a'
+            pile: 'dc1'
+        static-node-8.ydb-cluster.com:
+          location:
+            data_center: 'zone-a'
+            pile: 'dc1'
+        static-node-9.ydb-cluster.com:
+          location:
+            data_center: 'zone-b'
+            pile: 'dc2'
+        static-node-10.ydb-cluster.com:
+          location:
+            data_center: 'zone-b'
+            pile: 'dc2'
+        static-node-11.ydb-cluster.com:
+          location:
+            data_center: 'zone-b'
+            pile: 'dc2'
+        static-node-12.ydb-cluster.com:
+          location:
+            data_center: 'zone-b'
+            pile: 'dc2'
+        static-node-13.ydb-cluster.com:
+          location:
+            data_center: 'zone-b'
+            pile: 'dc2'
+        static-node-14.ydb-cluster.com:
+          location:
+            data_center: 'zone-b'
+            pile: 'dc2'
+        static-node-15.ydb-cluster.com:
+          location:
+            data_center: 'zone-b'
+            pile: 'dc2'
+        static-node-16.ydb-cluster.com:
+          location:
+            data_center: 'zone-b'
+            pile: 'dc2'
+      vars:
+        ansible_user: ubuntu
+        # ansible_ssh_common_args: "-o ProxyJump=ubuntu@static-node-1.ydb-cluster.com"
+        ansible_ssh_private_key_file: "~/yandex"
+
+        system_timezone: UTC
+        system_ntp_servers: [time.cloudflare.com, time.google.com, ntp.ripe.net, pool.ntp.org]
+
+        # ydb_archive: "{{ ansible_config_file | dirname }}/../ydbd-enterpise-26.1.1-stable-linux-amd64.tar.xz"
+        ydb_version: "26.1.1.22"
+        ydb_config: "{{ ansible_config_file | dirname }}/files/config.yaml"
+        ydb_config_v2: true
+        ydb_tls_dir: "{{ ansible_config_file | dirname }}/../certs"
+        ydb_install_fq_connector: false
+
+        ydb_user: root
+        ydb_cores_static: 2
+        ydb_disks:
+          - name: /dev/vdb
+            label: ydb_disk_1
+        ydb_allow_format_drives: true
+        ydb_skip_data_loss_confirmation_prompt: false
+        ydb_enforce_user_token_requirement: true
+        ydb_domain: Root
+        ydb_dbname: db1
+        ydb_pool_kind: ssd
+        ydb_cores_dynamic: 2
+        ydb_database_groups: 4
+        ydb_dynnodes:
+          - { instance: 'a', offset: 1}
+        ydbops_local: true
